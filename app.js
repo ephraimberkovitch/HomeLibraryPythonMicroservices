@@ -14,9 +14,9 @@ angular.module('sortApp', [])
             { name: 'Rainbow', fish: 'Variety', tastiness: 6 }
         ];*/
 
-        $http.get('sushi.json')
+        $http.get('http://127.0.0.1:5555/books')
             .then(function(res){
-                $scope.sushi = res.data.sushi;
+                $scope.books = res.data;
             });
 
         $scope.sort = function(sortBy) {
