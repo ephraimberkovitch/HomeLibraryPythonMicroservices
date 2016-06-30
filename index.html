@@ -18,18 +18,19 @@
 
 </head>
 <body dir="rtl">
+<h2 style="text-align: center">הספריה הביתית של אלי</h2>
 <div class="container" ng-app="sortApp" ng-controller="mainController">
 
-    <div class="alert alert-info">
+    <div class="alert alert-info" style="display: none">
         <p>Sort Type: {{ sortType }}</p>
         <p>Sort Reverse: {{ sortReverse }}</p>
-        <p>Search Query: {{ searchFish }}</p>
+        <p>Search Query: {{ searchBook }}</p>
     </div>
     <form>
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text" class="form-control" placeholder="Search a Book" ng-model="searchFish">
+                <input type="text" class="form-control" placeholder="חיפוש ספר" ng-model="searchBook">
             </div>
         </div>
     </form>
@@ -37,35 +38,89 @@
 
         <thead>
         <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
             <td>
-                <a href="#" ng-click="sort('id')">
-                    ID
-                    <span ng-show="sortType == 'id' && sortReverse==false" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'id' && sortReverse==true" class="fa fa-caret-up"></span>
-                </a>
+                    מספר
             </td>
             <td>
                 <a href="#" ng-click="sort('writers')">
-                    Writers
-                    <span ng-show="sortType == 'writers' && sortReverse==false" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'writers' && sortReverse==true" class="fa fa-caret-up"></span>
+                    מחבר/מחברים
+                    <span ng-show="sortType == 'writers' && sortReverse==false" class="fa fa-caret-up"></span>
+                    <span ng-show="sortType == 'writers' && sortReverse==true" class="fa fa-caret-down"></span>
                 </a>
             </td>
             <td>
                 <a href="#" ng-click="sort('title')">
-                    Title
-                    <span ng-show="sortType == 'title' && sortReverse==false" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'title' && sortReverse==true" class="fa fa-caret-up"></span>
+                    כותרת
+                    <span ng-show="sortType == 'title' && sortReverse==false" class="fa fa-caret-up"></span>
+                    <span ng-show="sortType == 'title' && sortReverse==true" class="fa fa-caret-down"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sort('series')">
+                    סדרה
+                    <span ng-show="sortType == 'series' && sortReverse==false" class="fa fa-caret-up"></span>
+                    <span ng-show="sortType == 'series' && sortReverse==true" class="fa fa-caret-down"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sort('volumes')">
+                    כרכים
+                    <span ng-show="sortType == 'volumes' && sortReverse==false" class="fa fa-caret-up"></span>
+                    <span ng-show="sortType == 'volumes' && sortReverse==true" class="fa fa-caret-down"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sort('copies')">
+                    עותקים
+                    <span ng-show="sortType == 'copies' && sortReverse==false" class="fa fa-caret-up"></span>
+                    <span ng-show="sortType == 'copies' && sortReverse==true" class="fa fa-caret-down"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sort('date_created')">
+                    תאריך
+                    <span ng-show="sortType == 'date_created' && sortReverse==false" class="fa fa-caret-up"></span>
+                    <span ng-show="sortType == 'date_created' && sortReverse==true" class="fa fa-caret-down"></span>
                 </a>
             </td>
         </tr>
         </thead>
 
         <tbody>
-        <tr ng-repeat="book in books | orderBy:sortType:sortReverse | filter:searchFish">
-            <td>{{ book.id }}</td>
-            <td>{{ book.writers }}</td>
-            <td>{{ book.title }}</td>
+        <tr ng-repeat="book in books | orderBy:sortType:sortReverse | filter:searchBook">
+            <td>
+                <a href="#" ng-click="deleteRecord(book)"><i ng-if="book.id>-1" class="fa fa-trash"></i></a>
+            </td>
+            <td>
+                <a href="#" ng-click="editRecord(book,$index)"><i ng-if="book.id>-1" ng-hide="editMode==true&&editableRowIndex==$index" class="fa fa-pencil"></i></a>
+                <a href="#" ng-click="addRecord(book)"><i ng-if="book.id==-1" ng-hide="editMode==true&&editableRowIndex==$index" class="fa fa-plus"></i></a>
+                <a href="#" ng-click="confirmEdit(book)"><i ng-show="editMode==true&&editableRowIndex==$index" class="fa fa-check"></i></a>
+                <a href="#" ng-click="cancelEdit(book)"><i ng-show="editMode==true&&editableRowIndex==$index" class="fa fa-ban"></i></a>
+            </td>
+            <td>{{ $index>0 ? $index : '' }}</td>
+            <td>
+                <span ng-hide="editMode==true&&editableRowIndex==$index">{{ book.writers }}</span>
+                <input type="text" ng-show="editMode==true&&editableRowIndex==$index" ng-model="book.writers">
+            </td>
+            <td>
+                <span ng-hide="editMode==true&&editableRowIndex==$index">{{ book.title }}</span>
+                <input type="text" ng-show="editMode==true&&editableRowIndex==$index" ng-model="book.title">
+            </td>
+            <td>
+                <span ng-hide="editMode==true&&editableRowIndex==$index">{{ book.series }}</span>
+                <input type="text" ng-show="editMode==true&&editableRowIndex==$index" ng-model="book.series">
+            </td>
+            <td>
+                <span ng-if="book.volumes>1" ng-hide="editMode==true&&editableRowIndex==$index">{{ book.volumes }}</span>
+                <input type="number" ng-show="editMode==true&&editableRowIndex==$index" ng-model="book.volumes">
+            </td>
+            <td>
+                <span ng-if="book.copies>1" ng-hide="editMode==true&&editableRowIndex==$index">{{ book.copies }}</span>
+                <input type="number" ng-show="editMode==true&&editableRowIndex==$index" ng-model="book.copies">
+            </td>
+            <td>{{ book.date_created | date }}</td>
         </tr>
         </tbody>
 
