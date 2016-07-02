@@ -25,6 +25,16 @@ angular.module('sortApp', [])
         }
 
         $scope.editRecord = function(book,index) {
+            $scope.bookToRestore = angular.copy(book);
+            tmpBook = _.find($scope.books,function(b) {
+                return b.id==book.id;
+            });
+            for (var i=0;i<$scope.books.length;i++) {
+                if ($scope.books[i].id==book.id) {
+                    $scope.indexToRestore = i;
+                    break;
+                }
+            }
             $scope.editMode = true;
             $scope.editableRowIndex = index;
         }
@@ -53,6 +63,8 @@ angular.module('sortApp', [])
         }
 
         $scope.cancelEdit = function(book) {
+            if ($scope.indexToRestore&&$scope.indexToRestore>-1)
+                $scope.books[$scope.indexToRestore] = $scope.bookToRestore;
             $scope.editMode = false;
             $scope.editableRowIndex = -1;
         }
