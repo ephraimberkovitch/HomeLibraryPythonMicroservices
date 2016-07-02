@@ -1,4 +1,6 @@
 //https://scotch.io/tutorials/sort-and-filter-a-table-using-angular
+var basic_url = 'http://127.0.0.1:5555';
+
 angular.module('sortApp', [])
 
     .controller('mainController', function($scope, $http) {
@@ -7,7 +9,7 @@ angular.module('sortApp', [])
         $scope.searchBook   = '';     // set the default search/filter term
         $scope.editMode  = false;
 
-        $http.get('http://127.0.0.1:5555/books')
+        $http.get(basic_url+'/books')
             .then(function(res){
                 $scope.books = res.data;
                 var firstRow = {'id':-1,'writers':'','title':'','series':'','volumes':1,'copies':1,'date_created':new Date()};
@@ -42,7 +44,7 @@ angular.module('sortApp', [])
         $scope.confirmEdit = function(book) {
             if (book.id==-1) {
                 //insert
-                url = 'http://127.0.0.1:5555/insert_book?w='+book.writers+'&t='+book.title+'&s='+book.series+'&v='+book.volumes+'&c='+book.copies;
+                url = basic_url+'/insert_book?w='+book.writers+'&t='+book.title+'&s='+book.series+'&v='+book.volumes+'&c='+book.copies;
                 $http.get(url)
                     .then(function(res){
                         $scope.books[0].id = res.data.new_id;
@@ -52,7 +54,7 @@ angular.module('sortApp', [])
             }
             else {
                 //update
-                url = 'http://127.0.0.1:5555/update_book?i='+book.id+'&w='+book.writers+'&t='+book.title+'&s='+book.series+'&v='+book.volumes+'&c='+book.copies;
+                url = basic_url+'/update_book?i='+book.id+'&w='+book.writers+'&t='+book.title+'&s='+book.series+'&v='+book.volumes+'&c='+book.copies;
                 console.log(url);
                 $http.get(url)
                     .then(function(res){
@@ -71,7 +73,7 @@ angular.module('sortApp', [])
 
         $scope.deleteRecord = function(book) {
             if (confirm('אתם בטוחים שברצונכם למחוק את הספר?')) {
-            $http.get('http://127.0.0.1:5555/delete_book?id='+book.id)
+            $http.get(basic_url+'/delete_book?id='+book.id)
                 .then(function(res){
                     alert('הפעולה בוצעה בהצלחה');
                     var indexToRemove = -1;
