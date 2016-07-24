@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>הספריה</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="app.css">
+
+    <!-- JS -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="app.js"></script>
+    <script src="controllers/books.js"></script>
+    <script src="controllers/settings.js"></script>
+    <script src="config.js"></script>
+</head>
+<body dir="rtl" ng-app="libraryApp">
+        <!-- HEADER AND NAVBAR -->
+        <header dir="rtl">
+            <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">הספריה</a>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#books"><i class="fa fa-book"></i> ספריה</a></li>
+                    <li><a href="#settings"><i class="fa fa-cog"></i> הגדרות</a></li>
+                </ul>
+            </div>
+            </nav>
+        </header>
+
+        <!-- MAIN CONTENT AND INJECTED VIEWS -->
+        <div id="main">
+            <div ng-view></div>
+        </div>
+</body>
+</html>

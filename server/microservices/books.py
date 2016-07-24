@@ -1,10 +1,12 @@
 #! /usr/bin/env python
-from flask import Flask
-import books.bl.books_operations
-from datetime import datetime
 import json
+from datetime import datetime
+
+from flask import Flask
 from flask import request
+
 from crossdomain import crossdomain
+import server.microservices.books.bl.books_operations;
 
 app = Flask(__name__)
 
@@ -18,7 +20,7 @@ class DateTimeEncoder(json.JSONEncoder):
 @app.route("/books")
 @crossdomain(origin='*')
 def get_books():
-    return json.dumps(books.bl.books_operations.get_all_books(),cls=DateTimeEncoder)
+    return json.dumps(server.microservices.books.bl.books_operations.get_all_books(), cls=DateTimeEncoder)
 
 @app.route("/insert_book")
 @crossdomain(origin='*')
@@ -28,12 +30,15 @@ def insert_book():
     series = request.args['s']
     volumes = request.args['v']
     copies = request.args['c']
-    return json.dumps(books.bl.books_operations.insert_book(writers,title,series,volumes,copies))
+    is_owned = int(request.args['o'])
+    is_younger = int(request.args['y'])
+    return json.dumps(
+        server.microservices.books.bl.books_operations.insert_book(writers, title, series, volumes, copies, is_owned, is_younger))
 
 @app.route("/delete_book")
 @crossdomain(origin='*')
 def delete_book():
-    books.bl.books_operations.delete_book(request.args['id'])
+    server.microservices.books.bl.books_operations.delete_book(request.args['id'])
     return "Ok"
 
 @app.route("/update_book")
@@ -45,7 +50,9 @@ def update_book():
     series = request.args['s']
     volumes = request.args['v']
     copies = request.args['c']
-    books.bl.books_operations.update_book(id,writers,title,series,volumes,copies)
+    is_owned = request.args['o']
+    is_younger = request.args['y']
+    server.microservices.books.bl.books_operations.update_book(id, writers, title, series, volumes, copies, is_owned, is_younger)
     return'Ok'
 
 if __name__ == '__main__':

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.min.js"></script>
+    <script>
+        var app = angular.module("myApp",[]);
+        app.controller("myController", function($scope)
+        {
+            $scope.x = 10;
+            $scope.currentPage = 0;
+        });
+        app.directive("number", function(){
+            return {
+                restrict: 'EA',
+                                        /*replace: 'true',*/
+                /*transclude:true,*/
+                scope:{val:"@"},
+                template:"<div>{{val | num2word}}</div>",
+                link: function(scope,element,attrs)
+                {
+                  console.log("link ",scope,element,attrs);
+                }
+            };
+        });
+        app.filter('even', function() {
+          return function(input) {
+            var out = [];
+            angular.forEach(input, function(number) {
+              if (parseInt(number)%2==0) {
+                out.push(number);
+              }
+            });
+            return out;
+          }
+        });
+        app.filter('odd', function() {
+          return function(input) {
+            var out = [];
+            angular.forEach(input, function(number) {
+              if (parseInt(number)%2!=0) {
+                out.push(number);
+              }
+            });
+            return out;
+          }
+        });
+        app.filter('num2word', function() {
+          return function(input) {
+              var word = "unknown";
+              if (input=='0')
+                word = "zero";
+              else if (input=='1')
+                word = "one";
+              else
+                word = input;
+              return word;
+          }
+        });
+    </script>
+</head>
+<body ng-app="myApp">
+    <div ng-controller="myController">
+        {{ x }}
+        <ul ng-repeat="i in [0,1,2,3,4,5,6,7,8,9] | limitTo:5:currentPage*5 | even">
+            <!--<li>{{ i }}</li>-->
+            <number val="{{ i }}"></number>
+        </ul>
+        <button ng-disabled="currentPage==0" ng-click="currentPage=currentPage-1">Prev</button>
+        <button ng-disabled="currentPage==1" ng-click="currentPage=currentPage+1">Next</button>
+    </div>
+</body>
+</html>

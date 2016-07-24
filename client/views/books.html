@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>הספריה הביתית של אלי ברקוביץ</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="app.css">
-
-    <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-    <script src="app.js"></script>
-
-</head>
-<body dir="rtl">
-<h2 style="text-align: center">הספריה הביתית של אלי</h2>
-<div class="container" ng-app="sortApp" ng-controller="mainController">
+<div class="container" ng-controller="booksController">
 
     <div class="alert alert-info" style="display: none">
         <p>Sort Type: {{ sortType }}</p>
@@ -77,6 +58,20 @@
                 </a>
             </td>
             <td>
+                <a href ng-click="sort('owned')">
+אצל אלי
+                    <span ng-show="sortType == 'owned' && sortReverse==false" class="fa fa-caret-up"></span>
+                    <span ng-show="sortType == 'owned' && sortReverse==true" class="fa fa-caret-down"></span>
+                </a>
+            </td>
+            <td>
+                <a href ng-click="sort('younger')">
+לקטנים
+                    <span ng-show="sortType == 'younger' && sortReverse==false" class="fa fa-caret-up"></span>
+                    <span ng-show="sortType == 'younger' && sortReverse==true" class="fa fa-caret-down"></span>
+                </a>
+            </td>
+            <td>
                 <a href ng-click="sort('date_created')">
                     תאריך
                     <span ng-show="sortType == 'date_created' && sortReverse==false" class="fa fa-caret-up"></span>
@@ -115,8 +110,14 @@
                 <input style="width:50px" type="number" ng-show="editMode==true&&editableRowIndex==$index" ng-model="book.volumes">
             </td>
             <td style="padding: 5px 0 0 0">
-                <span ng-if="book.copies>1" ng-hide="editMode==true&&editableRowIndex==$index">{{ book.copies }}</span>
+                <span ng-hide="editMode==true&&editableRowIndex==$index">{{ book.copies }}</span>
                 <input style="width:50px" type="number" ng-show="editMode==true&&editableRowIndex==$index" ng-model="book.copies">
+            </td>
+            <td style="text-align: center">
+                <input type="checkbox" ng-disabled="editMode==false||editableRowIndex!=$index" ng-model="book.is_owned">
+            </td>
+            <td style="text-align: center">
+                <input type="checkbox" ng-disabled="editMode==false||editableRowIndex!=$index" ng-model="book.is_younger">
             </td>
             <td>{{ book.date_created | date }}</td>
         </tr>
@@ -125,5 +126,3 @@
     </table>
 
 </div>
-</body>
-</html>

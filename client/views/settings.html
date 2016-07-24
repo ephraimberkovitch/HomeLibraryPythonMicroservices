@@ -1,0 +1,46 @@
+<div class="container" ng-controller="settingsController">
+<h3>הגדרות</h3>
+<hr>
+<table>
+    <thead>
+        <tr>
+            <th>ערך נוכחי</th>
+            <th>שינוי</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="text" ng-model="id"/></td>
+            <td><button ng-click="update('id');">עדכון</button></td>
+        </tr>
+        <tr>
+            <td><input type="text" ng-model="authors"/></td>
+            <td><button ng-click="update('authors');">עדכון</button></td>
+        </tr>
+        <tr>
+            <td><input type="text" ng-model="title"/></td>
+            <td><button ng-click="update('title');">עדכון</button></td>
+        </tr>
+        <tr>
+            <td><input type="text" ng-model="series"/></td>
+            <td><button ng-click="update('series');">עדכון</button></td>
+        </tr>
+        <tr>
+            <td><input type="text" ng-model="volumes"/></td>
+            <td><button ng-click="update('volumes');">עדכון</button></td>
+        </tr>
+        <tr>
+            <td><input type="text" ng-model="copies"/></td>
+            <td><button ng-click="update('copies');">עדכון</button></td>
+        </tr>
+        <tr>
+            <td><input type="text" ng-model="owned"/></td>
+            <td><button ng-click="update('owned');">עדכון</button></td>
+        </tr>
+        <tr>
+            <td><input type="text" ng-model="young"/></td>
+            <td><button ng-click="update('young');">עדכון</button></td>
+        </tr>
+    </tbody>
+</table>
+</div>
